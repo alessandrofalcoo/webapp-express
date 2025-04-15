@@ -13,10 +13,12 @@ app.listen(PORT, () => {
 
 app.use(express.json());
 
+app.use(express.static('/public/images'))
+
 
 // There is the front-end URL
 app.use(cors({
-    origin: ''
+    origin: 'http://localhost:5173'
 }))
 
 // Routes
@@ -24,8 +26,6 @@ app.use(cors({
 app.get('/', (req, res) => {
     res.send('Movies API Server!')
 })
-
-
 
 app.use('/movies', moviesRouter)
 
