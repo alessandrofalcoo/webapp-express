@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const PORT = 3000
+const connection = require('./data/db')
 
 app.listen(PORT, () => {
     console.log('Server is listening on http://localhost:' + PORT);
@@ -24,7 +25,7 @@ app.get('/', (req, res) => {
 
 // Index route for movies
 
-app.get('/', (req, res) => {
+app.get('/movies', (req, res) => {
     const sql = 'SELECT * FROM movies'
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).json({
@@ -39,10 +40,10 @@ app.get('/', (req, res) => {
 
 // Show route for a single movie
 
-app.get('/:id', (req, res) => {
+app.get('/movies/:id', (req, res) => {
     const movieId = Number(req.params.id)
 
-    const sql = 'SELECT * FROM movies where id = ?'
+    const sql = 'SELECT * FROM movies JOIN reviews ON reviews.movie_id = ' + movieId
 
     connection.query(sql, [movieId], (err, results) => {
         if (err) return res.status(500).json({
