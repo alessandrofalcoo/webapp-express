@@ -7,7 +7,7 @@ const error_404 = require('./middlewares/error_404')
 const serverError = require('./middlewares/server_error')
 
 app.listen(PORT, () => {
-    console.log('Server is listening on http://localhost:' + PORT);
+    console.log(`Server is listening on http://localhost: ${PORT}`);
 
 })
 

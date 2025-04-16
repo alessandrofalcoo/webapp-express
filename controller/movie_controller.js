@@ -15,7 +15,7 @@ function index(req, res) {
 function show(req, res) {
     const movieId = Number(req.params.id)
 
-    const sql = 'SELECT * FROM movies JOIN reviews ON reviews.movie_id = ' + movieId
+    const sql = `SELECT * FROM movies JOIN reviews ON reviews.movie_id = ${movieId} `
 
     connection.query(sql, [movieId], (err, results) => {
         if (err) return res.status(500).json({
