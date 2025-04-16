@@ -6,20 +6,19 @@ const moviesRouter = require('./routes/movies')
 const error_404 = require('./middlewares/error_404')
 const serverError = require('./middlewares/server_error')
 
-app.listen(PORT, () => {
-    console.log(`Server is listening on http://localhost: ${PORT}`);
-
-})
+// There is the front-end URL
+app.use(cors({
+    origin: 'http://localhost:5173/'
+}))
 
 app.use(express.json());
 
-app.use(express.static('/public/images'))
+app.use(express.static('/public'));
 
+app.listen(PORT, () => {
+    console.log(`Server is listening on http://localhost:${PORT}`);
 
-// There is the front-end URL
-app.use(cors({
-    origin: 'http://localhost:5173'
-}))
+})
 
 // Routes
 
