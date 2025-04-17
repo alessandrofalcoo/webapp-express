@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const PORT = 3000
-const moviesRouter = require('./routes/movies')
+const moviesRouter = require('./routes/movies_router')
 const error_404 = require('./middlewares/error_404')
 const serverError = require('./middlewares/server_error')
 

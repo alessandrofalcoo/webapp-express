@@ -13,10 +13,9 @@ function index(req, res) {
 }
 
 function show(req, res) {
-    console.log('ciao');
     const movieId = Number(req.params.id)
 
-    const sql = `SELECT * FROM movies JOIN reviews ON reviews.movie_id = ${movieId} `
+    const sql = `SELECT * FROM movies JOIN reviews ON reviews.movie_id = ${movieId}`
 
     connection.query(sql, [movieId], (err, results) => {
         if (err) return res.status(500).json({
@@ -31,4 +30,24 @@ function show(req, res) {
     })
 }
 
-module.exports = { index, show }
+function store(req, res) {
+    const movieId = Number(req.params.id)
+    const name = req.params.name
+    const vote = Number(req.params.vote)
+    const text = req.params.text
+    const created = Date(req.params.created_at)
+    const updated = Date(req.params.updated_at)
+
+    const sql = `INSERT INTO reviews (movie_id, name, vote, text, created_at, updated_at) VALUES (${movieId}, ${name}, ${vote}, ${text}, ${created}, ${updated})`
+
+    const inputValues = [movieId, name, vote, text, created, updated]
+    connection.query(sql, inputValues, (err, results) => {
+        if (err) return res.status(500).json({
+            error: 'Query failed'
+        })
+        const review = results[0]
+        res.json(review)
+    })
+}
+
+module.exports = { index, show, store }
