@@ -31,23 +31,23 @@ function show(req, res) {
 }
 
 function store(req, res) {
+    console.log(req.body);
 
     const {
-        id: movieId,
+        movie_id: movieId,
         name: name,
         vote: vote,
-        text: text,
-        created_at: created,
-        updated_at: updated
+        text: text
     } = req.body;
 
-    const sql = `INSERT INTO reviews (movie_id, name, vote, text, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`
+    const sql = `INSERT INTO reviews (movie_id, name, vote, text) VALUES (?, ?, ?, ?)`
 
-    const inputValues = [movieId, name, vote, text, created, updated]
+    const inputValues = [movieId, name, vote, text]
     connection.query(sql, inputValues, (err, results) => {
-
+        console.log(err);
         if (err) return res.status(500).json({
             error: 'Query failed'
+
         })
         // Restituisci l'ID della recensione appena creata
         res.status(201).json({
