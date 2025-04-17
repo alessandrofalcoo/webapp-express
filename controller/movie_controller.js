@@ -15,7 +15,7 @@ function index(req, res) {
 function show(req, res) {
     const movieId = Number(req.params.id)
 
-    const sql = `SELECT * FROM movies JOIN reviews ON reviews.movie_id = ${movieId}`
+    const sql = `SELECT * FROM movies JOIN reviews ON reviews.movie_id = ?`
 
     connection.query(sql, [movieId], (err, results) => {
         if (err) return res.status(500).json({
@@ -31,22 +31,29 @@ function show(req, res) {
 }
 
 function store(req, res) {
-    const movieId = Number(req.params.id)
-    const name = req.params.name
-    const vote = Number(req.params.vote)
-    const text = req.params.text
-    const created = Date(req.params.created_at)
-    const updated = Date(req.params.updated_at)
 
-    const sql = `INSERT INTO reviews (movie_id, name, vote, text, created_at, updated_at) VALUES (${movieId}, ${name}, ${vote}, ${text}, ${created}, ${updated})`
+    const {
+        id: movieId,
+        name: name,
+        vote: vote,
+        text: text,
+        created_at: created,
+        updated_at: updated
+    } = req.body;
+
+    const sql = `INSERT INTO reviews (movie_id, name, vote, text, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`
 
     const inputValues = [movieId, name, vote, text, created, updated]
     connection.query(sql, inputValues, (err, results) => {
+
         if (err) return res.status(500).json({
             error: 'Query failed'
         })
-        const review = results[0]
-        res.json(review)
+        // Restituisci l'ID della recensione appena creata
+        res.status(201).json({
+            message: 'Review created successfully',
+            reviewId: results.insertId
+        });
     })
 }
 
